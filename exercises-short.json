@@ -1,0 +1,274 @@
+{
+    "categories": {
+        "BENCH_PRESS": {
+            "primaryMuscles": [
+                "CHEST"
+            ],
+            "secondaryMuscles": [
+                "SHOULDERS",
+                "TRICEPS"
+            ],
+            "exercises": {
+                "ALTERNATING_DUMBBELL_CHEST_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "ALTERNATING_DUMBBELL_CHEST_PRESS_ON_SWISS_BALL": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "BARBELL_BOARD_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "BARBELL_FLOOR_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "CLOSE_GRIP_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "TRICEPS"
+                    ],
+                    "secondaryMuscles": [
+                        "CHEST",
+                        "SHOULDERS"
+                    ]
+                },
+                "DECLINE_DUMBBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "DUMBBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "DUMBBELL_FLOOR_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "INCLINE_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "INCLINE_DUMBBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "INCLINE_SMITH_MACHINE_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "ISOMETRIC_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "KETTLEBELL_CHEST_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "NEUTRAL_GRIP_DUMBBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "NEUTRAL_GRIP_DUMBBELL_INCLINE_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "ONE_ARM_FLOOR_PRESS": {
+                    "counterpart": "WEIGHTED_ONE_ARM_FLOOR_PRESS",
+                    "isBodyWeight": true,
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS",
+                        "ABS"
+                    ]
+                },
+                "PARTIAL_LOCKOUT": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "REVERSE_GRIP_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "REVERSE_GRIP_INCLINE_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "SINGLE_ARM_CABLE_CHEST_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS",
+                        "ABS"
+                    ]
+                },
+                "SINGLE_ARM_DUMBBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS",
+                        "ABS"
+                    ]
+                },
+                "SMITH_MACHINE_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "SWISS_BALL_DUMBBELL_CHEST_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "TRIPLE_STOP_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                },
+                "WEIGHTED_ONE_ARM_FLOOR_PRESS": {
+                    "counterpart": "ONE_ARM_FLOOR_PRESS",
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS",
+                        "ABS"
+                    ]
+                },
+                "WIDE_GRIP_BARBELL_BENCH_PRESS": {
+                    "primaryMuscles": [
+                        "CHEST"
+                    ],
+                    "secondaryMuscles": [
+                        "SHOULDERS",
+                        "TRICEPS"
+                    ]
+                }
+            }
+        }
+    }
+}
