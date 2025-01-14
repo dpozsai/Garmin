@@ -1,12 +1,9 @@
 import pandas as pd
+import shutil
 import os
-import datetime
-from datetime import timezone
 import json
 import logging
-import sys
 from getpass import getpass
-
 import readchar
 import requests
 from garth.exc import GarthHTTPError
@@ -30,7 +27,12 @@ email = os.getenv("GARMIN_EMAIL")
 password = os.getenv("GARMIN_PASSWORD")
 tokenstore = os.getenv("GARMINTOKENS") or "~/.garminconnect"
 tokenstore_base64 = os.getenv("GARMINTOKENS_BASE64") or "~/.garminconnect_base64"
+sourcedir = os.getenv("SOURCE_DIR") or 'arboleaf2garmin/data'
+removedir = os.getenv("REMOVE_DIR") or 'old'
+move_or_delete = os.getenv("MOVE_OR_DELETE") or True
 api = None
+
+
 
 def display_json(api_call, output):
     """Format API output for better readability."""
@@ -67,7 +69,7 @@ def init_api(email, password):
 
     try:
         # Using Oauth1 and OAuth2 token files from directory
-        print(
+        logger.info(
             f"Trying to login to Garmin Connect using token data from directory '{tokenstore}'...\n"
         )
 
@@ -84,7 +86,7 @@ def init_api(email, password):
 
     except (FileNotFoundError, GarthHTTPError, GarminConnectAuthenticationError):
         # Session is expired. You'll need to log in again
-        print(
+        logger.error(
             "Login tokens not present, login with your Garmin Connect credentials to generate them.\n"
             f"They will be stored in '{tokenstore}' for future use.\n"
         )
@@ -99,7 +101,7 @@ def init_api(email, password):
             garmin.login()
             # Save Oauth1 and Oauth2 token files to directory for next login
             garmin.garth.dump(tokenstore)
-            print(
+            logger.info(
                 f"Oauth tokens stored in '{tokenstore}' directory for future use. (first method)\n"
             )
             # Encode Oauth1 and Oauth2 tokens to base64 string and safe to file for next login (alternative way)
@@ -107,7 +109,7 @@ def init_api(email, password):
             dir_path = os.path.expanduser(tokenstore_base64)
             with open(dir_path, "w") as token_file:
                 token_file.write(token_base64)
-            print(
+            logger.info(
                 f"Oauth tokens encoded as base64 string and saved to '{dir_path}' file for future use. (second method)\n"
             )
         except (
@@ -124,20 +126,39 @@ def init_api(email, password):
 
 
 # Obtener la lista de ficheros en la carpeta 'data'
-sourcedir='arboleaf2garmin/data'
 ficheros = os.listdir(sourcedir)
+
+
 
 # Filtrar los ficheros para obtener solo los que tienen extensión .xlsx
 ficheros_excel = [f for f in ficheros if f.endswith('.xlsx')]
 
-# Leer el primer fichero Excel encontrado
+dataframes=[]
+
+# Leer todos los ficheros Excel encontrados
 if ficheros_excel:
-    df = pd.read_excel(os.path.join(sourcedir, ficheros_excel[0]))   
-    df['Tiempo de medición'] = pd.to_datetime(df['Tiempo de medición'],dayfirst=True) 
+    for fichero_excel in ficheros_excel:
+        df = pd.read_excel(os.path.join(sourcedir, fichero_excel))
+        dataframes.append(df)
+        if move_or_delete:
+            # Crear la subcarpeta de almacenado si no existe
+            carpeta_archivado=os.path.join(sourcedir, removedir)
+            if not os.path.exists(carpeta_archivado):
+                os.makedirs(carpeta_archivado)
+                logger.info("Creada carpeta de archivado: ", carpeta_archivado)
+            shutil.move(os.path.join(sourcedir, fichero_excel), os.path.join(carpeta_archivado, os.path.basename(fichero_excel)))
+            logger.debug("Movido fichero %s a la carpeta %s", fichero_excel, carpeta_archivado)
+        else:
+            os.remove(os.path.join(sourcedir, fichero_excel))
+            logger.debug("Borrado fichero %s", fichero_excel)
+
+    df_all = pd.concat(dataframes, ignore_index=True)
+    df_all['Tiempo de medición'] = pd.to_datetime(df_all['Tiempo de medición'],dayfirst=True) 
     # Agrupar por la fecha (sin la hora) y calcular la media de varias columnas
-    df['Fecha'] = df['Tiempo de medición'].dt.date
-    medias = df.groupby('Fecha')[['Peso(kg)', 'Grasa corporal(%)', 'Agua corporal(%)', 'Grasa visceral', 'Masa ósea(kg)', 'Masa muscular(kg)', 
-                                  'TMB(kcal)', 'Edad metabólica', 'IMC']].mean()
+    df_all['Fecha'] = df_all['Tiempo de medición'].dt.date
+    medias = df_all.groupby('Fecha')[['Peso(kg)', 'Grasa corporal(%)', 'Agua corporal(%)', 'Grasa visceral', 'Masa ósea(kg)', 'Masa muscular(kg)', 
+                                'TMB(kcal)', 'Edad metabólica', 'IMC']].mean()
+    logger.debug(medias)
     medias_dict = medias.to_dict(orient='index')
     api = init_api(email, password)
 
@@ -175,64 +196,12 @@ if ficheros_excel:
                 visceral_fat_rating=visceral_fat_rating,
                 bmi=bmi,
             )
-
-    # Mostrar la media de 'Agua corporal(%)' por fecha 
-    # print(medias)
-    # print (df)
+            if response.ok:
+                logger.info("Subidos datos de fecha %s", fecha)
+                logger.debug(response.text)
+            else:
+                logger.error("Fallo en la subida de fecha %s", fecha)
+                logger.error(response)
+                logger.debug(response.text)
 else:
-    print("No se encontraron ficheros Excel en la carpeta 'data'.")
-
-# today = datetime.date.today()
-
-
-
-
-# api.add_body_composition(
-#             today.isoformat(),
-#             weight=weight,
-#             percent_fat=percent_fat,
-#             percent_hydration=percent_hydration,
-#             visceral_fat_mass=visceral_fat_mass,
-#             bone_mass=bone_mass,
-#             muscle_mass=muscle_mass,
-#             basal_met=basal_met,
-#             active_met=active_met,
-#             physique_rating=physique_rating,
-#             metabolic_age=metabolic_age,
-#             visceral_fat_rating=visceral_fat_rating,
-#             bmi=bmi,
-#         )
-
-
-# if api:
-#     # Add body composition
-#     weight = 70.0
-#     percent_fat = 15.4
-#     percent_hydration = 54.8
-#     visceral_fat_mass = 10.8
-#     bone_mass = 2.9
-#     muscle_mass = 55.2
-#     basal_met = 1454.1
-#     active_met = None
-#     physique_rating = None
-#     metabolic_age = 33.0
-#     visceral_fat_rating = None
-#     bmi = 22.2
-#     display_json(
-#         f"api.add_body_composition({today.isoformat()}, {weight}, {percent_fat}, {percent_hydration}, {visceral_fat_mass}, {bone_mass}, {muscle_mass}, {basal_met}, {active_met}, {physique_rating}, {metabolic_age}, {visceral_fat_rating}, {bmi})",
-#         api.add_body_composition(
-#             today.isoformat(),
-#             weight=weight,
-#             percent_fat=percent_fat,
-#             percent_hydration=percent_hydration,
-#             visceral_fat_mass=visceral_fat_mass,
-#             bone_mass=bone_mass,
-#             muscle_mass=muscle_mass,
-#             basal_met=basal_met,
-#             active_met=active_met,
-#             physique_rating=physique_rating,
-#             metabolic_age=metabolic_age,
-#             visceral_fat_rating=visceral_fat_rating,
-#             bmi=bmi,
-#         ),
-#     )
+    logger.info("No se encontraron ficheros Excel en la carpeta: ", sourcedir)
