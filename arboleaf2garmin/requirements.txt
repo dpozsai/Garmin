@@ -1,0 +1,6 @@
+garminconnect==0.2.25
+garth
+requests
+readchar
+pandas
+openpyxl
