@@ -86,10 +86,18 @@ def init_api(email, password):
 
     except (FileNotFoundError, GarthHTTPError, GarminConnectAuthenticationError):
         # Session is expired. You'll need to log in again
-        logger.error(
+        logger.warning(
             "Login tokens not present, login with your Garmin Connect credentials to generate them.\n"
             f"They will be stored in '{tokenstore}' for future use.\n"
         )
+        # el modulo de Garmin intenta usar la variable de entorno para verifcar si hay ficheros
+        if "GARMINTOKENS" in os.environ:
+            os.environ.pop("GARMINTOKENS")
+
+        # cremos la carpeta si no existe
+        if not os.path.exists(tokenstore):
+            os.makedirs(tokenstore)
+
         try:
             # Ask for credentials if not set as environment variables
             if not email or not password:
@@ -98,7 +106,9 @@ def init_api(email, password):
             garmin = Garmin(
                 email=email, password=password, is_cn=False, prompt_mfa=get_mfa
             )
+            # logger.debug(f"Login credentials:'{email}':'{password}' ")
             garmin.login()
+            logger.debug(garmin)
             # Save Oauth1 and Oauth2 token files to directory for next login
             garmin.garth.dump(tokenstore)
             logger.info(
@@ -145,7 +155,7 @@ if ficheros_excel:
             carpeta_archivado=os.path.join(sourcedir, removedir)
             if not os.path.exists(carpeta_archivado):
                 os.makedirs(carpeta_archivado)
-                logger.info("Creada carpeta de archivado: ", carpeta_archivado)
+                logger.info("Creada carpeta de archivado: %s", carpeta_archivado)
             shutil.move(os.path.join(sourcedir, fichero_excel), os.path.join(carpeta_archivado, os.path.basename(fichero_excel)))
             logger.debug("Movido fichero %s a la carpeta %s", fichero_excel, carpeta_archivado)
         else:
@@ -204,4 +214,4 @@ if ficheros_excel:
                 logger.error(response)
                 logger.debug(response.text)
 else:
-    logger.info("No se encontraron ficheros Excel en la carpeta: ", sourcedir)
+    logger.info("No se encontraron ficheros Excel en la carpeta: %s", sourcedir)

@@ -1,0 +1,16 @@
+services:
+  python-garmin:
+    image: python-garmin.img
+    build: 
+      context: .
+      dockerfile: Dockerfile 
+    env_file: 
+      - .env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /home/xbmc/OneDrive/_bascula:/data
+      - /home/xbmc/docker/python-garmin/.garminconnect:/root/.garminconnect
+    restart: no
